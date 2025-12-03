@@ -1,10 +1,18 @@
 import sys
 
-def run():
-    print("-----------------------------------------------")
-    print("--------------automation pipline is sucessfull.")
-    print("-----------------------------------------------")
-
+def test_logic():
+    print("Running system checks...")
+    
+    # Let's pretend we expect 2 + 2 to equal 5 (A logical error)
+    expected_result = 5
+    actual_result = 2 + 2
+    
+    if actual_result != expected_result:
+        print(f"CRITICAL ERROR: Math is broken! Expected {expected_result} but got {actual_result}")
+        # This command tells GitHub the program failed (Exit Code 1)
+        sys.exit(1) 
+    
+    print("Test Passed!")
 
 if __name__ == "__main__":
-    run()
+    test_logic()
