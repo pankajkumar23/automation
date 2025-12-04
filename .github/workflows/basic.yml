@@ -1,19 +1,37 @@
-name: Automation Pipeline
+name: CI/CD Pipeline
 
-on: [push] 
+on: [push]
 
 jobs:
-  test-my-code:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v3
+      # Step 1: Download code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
+      # Step 2: Test the code (CI)
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
 
-    - name: Run the script
-      run: python main.py
+      - name: Run Tests
+        run: python main.py
+
+      # Step 3: Login to Docker Hub (CD Starts here)
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Step 4: Build and Push Docker Image
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          # This tags the image as "latest"
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/automation-app:latest
