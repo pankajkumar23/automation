@@ -4,7 +4,7 @@ def test_logic():
     print("Running system checks...")
     
     # Let's pretend we expect 2 + 2 to equal 5 (A logical error)
-    expected_result = 5
+    expected_result = 4
     actual_result = 2 + 2
     
     if actual_result != expected_result:
